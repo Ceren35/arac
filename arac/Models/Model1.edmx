@@ -1,0 +1,457 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Database1Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="DetayTable">
+          <Key>
+            <PropertyRef Name="DetayId" />
+          </Key>
+          <Property Name="DetayId" Type="int" Nullable="false" />
+          <Property Name="Marka" Type="nchar" MaxLength="10" />
+          <Property Name="Model" Type="nchar" MaxLength="10" />
+          <Property Name="Yil" Type="nchar" MaxLength="10" />
+          <Property Name="Renk" Type="nchar" MaxLength="10" />
+          <Property Name="Plaka" Type="nchar" MaxLength="10" />
+          <Property Name="YakitTuru" Type="nchar" MaxLength="10" />
+          <Property Name="Ucret" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="FavoriTable">
+          <Key>
+            <PropertyRef Name="FavoriId" />
+          </Key>
+          <Property Name="FavoriId" Type="int" Nullable="false" />
+          <Property Name="IlanId" Type="int" />
+        </EntityType>
+        <EntityType Name="IlanTable">
+          <Key>
+            <PropertyRef Name="IlanId" />
+          </Key>
+          <Property Name="IlanId" Type="int" Nullable="false" />
+          <Property Name="Baslik" Type="nchar" MaxLength="10" />
+          <Property Name="KategoriId" Type="int" />
+          <Property Name="AlisTarihi" Type="nchar" MaxLength="10" />
+          <Property Name="TeslimTarihi" Type="nchar" MaxLength="10" />
+          <Property Name="Kimden" Type="int" />
+          <Property Name="Adres" Type="nchar" MaxLength="10" />
+          <Property Name="DetayId" Type="int" />
+        </EntityType>
+        <EntityType Name="KategoriTable">
+          <Key>
+            <PropertyRef Name="KategoriId" />
+          </Key>
+          <Property Name="KategoriId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="KategoriAdi" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="KullaniciTable">
+          <Key>
+            <PropertyRef Name="KullaniciId" />
+          </Key>
+          <Property Name="KullaniciId" Type="int" Nullable="false" />
+          <Property Name="AdSoyad" Type="nchar" MaxLength="10" />
+          <Property Name="KullaniciAdi" Type="nchar" MaxLength="10" />
+          <Property Name="Sifre" Type="nchar" MaxLength="10" />
+          <Property Name="Adres" Type="nchar" MaxLength="10" />
+          <Property Name="TelefonNo" Type="nchar" MaxLength="10" />
+          <Property Name="Email" Type="nchar" MaxLength="10" />
+          <Property Name="KayitTarihi" Type="nchar" MaxLength="10" />
+          <Property Name="KullaniciYetki" Type="nchar" MaxLength="10" />
+          <Property Name="FavoriId" Type="int" />
+        </EntityType>
+        <EntityType Name="SiparisTable">
+          <Key>
+            <PropertyRef Name="SiparisId" />
+          </Key>
+          <Property Name="SiparisId" Type="int" Nullable="false" />
+          <Property Name="IlanId" Type="int" />
+          <Property Name="Adet" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <Association Name="FK_FavoriTable_FavoriIlan">
+          <End Role="IlanTable" Type="Self.IlanTable" Multiplicity="0..1" />
+          <End Role="FavoriTable" Type="Self.FavoriTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IlanTable">
+              <PropertyRef Name="IlanId" />
+            </Principal>
+            <Dependent Role="FavoriTable">
+              <PropertyRef Name="IlanId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IlanTable_Detay">
+          <End Role="DetayTable" Type="Self.DetayTable" Multiplicity="0..1" />
+          <End Role="IlanTable" Type="Self.IlanTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DetayTable">
+              <PropertyRef Name="DetayId" />
+            </Principal>
+            <Dependent Role="IlanTable">
+              <PropertyRef Name="DetayId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IlanTable_kategori">
+          <End Role="KategoriTable" Type="Self.KategoriTable" Multiplicity="0..1" />
+          <End Role="IlanTable" Type="Self.IlanTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KategoriTable">
+              <PropertyRef Name="KategoriId" />
+            </Principal>
+            <Dependent Role="IlanTable">
+              <PropertyRef Name="KategoriId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IlanTable_Kimden">
+          <End Role="KullaniciTable" Type="Self.KullaniciTable" Multiplicity="0..1" />
+          <End Role="IlanTable" Type="Self.IlanTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KullaniciTable">
+              <PropertyRef Name="KullaniciId" />
+            </Principal>
+            <Dependent Role="IlanTable">
+              <PropertyRef Name="Kimden" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_KullaniciTable_Favori">
+          <End Role="FavoriTable" Type="Self.FavoriTable" Multiplicity="0..1" />
+          <End Role="KullaniciTable" Type="Self.KullaniciTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FavoriTable">
+              <PropertyRef Name="FavoriId" />
+            </Principal>
+            <Dependent Role="KullaniciTable">
+              <PropertyRef Name="FavoriId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SiparisTable_Siparis">
+          <End Role="IlanTable" Type="Self.IlanTable" Multiplicity="0..1" />
+          <End Role="SiparisTable" Type="Self.SiparisTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IlanTable">
+              <PropertyRef Name="IlanId" />
+            </Principal>
+            <Dependent Role="SiparisTable">
+              <PropertyRef Name="IlanId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Database1ModelStoreContainer">
+          <EntitySet Name="DetayTable" EntityType="Self.DetayTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FavoriTable" EntityType="Self.FavoriTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="IlanTable" EntityType="Self.IlanTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="KategoriTable" EntityType="Self.KategoriTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="KullaniciTable" EntityType="Self.KullaniciTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SiparisTable" EntityType="Self.SiparisTable" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_FavoriTable_FavoriIlan" Association="Self.FK_FavoriTable_FavoriIlan">
+            <End Role="IlanTable" EntitySet="IlanTable" />
+            <End Role="FavoriTable" EntitySet="FavoriTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IlanTable_Detay" Association="Self.FK_IlanTable_Detay">
+            <End Role="DetayTable" EntitySet="DetayTable" />
+            <End Role="IlanTable" EntitySet="IlanTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IlanTable_kategori" Association="Self.FK_IlanTable_kategori">
+            <End Role="KategoriTable" EntitySet="KategoriTable" />
+            <End Role="IlanTable" EntitySet="IlanTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IlanTable_Kimden" Association="Self.FK_IlanTable_Kimden">
+            <End Role="KullaniciTable" EntitySet="KullaniciTable" />
+            <End Role="IlanTable" EntitySet="IlanTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_KullaniciTable_Favori" Association="Self.FK_KullaniciTable_Favori">
+            <End Role="FavoriTable" EntitySet="FavoriTable" />
+            <End Role="KullaniciTable" EntitySet="KullaniciTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SiparisTable_Siparis" Association="Self.FK_SiparisTable_Siparis">
+            <End Role="IlanTable" EntitySet="IlanTable" />
+            <End Role="SiparisTable" EntitySet="SiparisTable" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Database1Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="DetayTable">
+          <Key>
+            <PropertyRef Name="DetayId" />
+          </Key>
+          <Property Name="DetayId" Type="Int32" Nullable="false" />
+          <Property Name="Marka" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Model" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Yil" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Renk" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Plaka" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="YakitTuru" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Ucret" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="IlanTable" Relationship="Self.FK_IlanTable_Detay" FromRole="DetayTable" ToRole="IlanTable" />
+        </EntityType>
+        <EntityType Name="FavoriTable">
+          <Key>
+            <PropertyRef Name="FavoriId" />
+          </Key>
+          <Property Name="FavoriId" Type="Int32" Nullable="false" />
+          <Property Name="IlanId" Type="Int32" />
+          <NavigationProperty Name="IlanTable" Relationship="Self.FK_FavoriTable_FavoriIlan" FromRole="FavoriTable" ToRole="IlanTable" />
+          <NavigationProperty Name="KullaniciTable" Relationship="Self.FK_KullaniciTable_Favori" FromRole="FavoriTable" ToRole="KullaniciTable" />
+        </EntityType>
+        <EntityType Name="IlanTable">
+          <Key>
+            <PropertyRef Name="IlanId" />
+          </Key>
+          <Property Name="IlanId" Type="Int32" Nullable="false" />
+          <Property Name="Baslik" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="KategoriId" Type="Int32" />
+          <Property Name="AlisTarihi" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="TeslimTarihi" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Kimden" Type="Int32" />
+          <Property Name="Adres" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="DetayId" Type="Int32" />
+          <NavigationProperty Name="DetayTable" Relationship="Self.FK_IlanTable_Detay" FromRole="IlanTable" ToRole="DetayTable" />
+          <NavigationProperty Name="FavoriTable" Relationship="Self.FK_FavoriTable_FavoriIlan" FromRole="IlanTable" ToRole="FavoriTable" />
+          <NavigationProperty Name="KategoriTable" Relationship="Self.FK_IlanTable_kategori" FromRole="IlanTable" ToRole="KategoriTable" />
+          <NavigationProperty Name="KullaniciTable" Relationship="Self.FK_IlanTable_Kimden" FromRole="IlanTable" ToRole="KullaniciTable" />
+          <NavigationProperty Name="SiparisTable" Relationship="Self.FK_SiparisTable_Siparis" FromRole="IlanTable" ToRole="SiparisTable" />
+        </EntityType>
+        <EntityType Name="KategoriTable">
+          <Key>
+            <PropertyRef Name="KategoriId" />
+          </Key>
+          <Property Name="KategoriId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KategoriAdi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="IlanTable" Relationship="Self.FK_IlanTable_kategori" FromRole="KategoriTable" ToRole="IlanTable" />
+        </EntityType>
+        <EntityType Name="KullaniciTable">
+          <Key>
+            <PropertyRef Name="KullaniciId" />
+          </Key>
+          <Property Name="KullaniciId" Type="Int32" Nullable="false" />
+          <Property Name="AdSoyad" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="KullaniciAdi" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Sifre" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Adres" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="TelefonNo" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="KayitTarihi" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="KullaniciYetki" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="FavoriId" Type="Int32" />
+          <NavigationProperty Name="FavoriTable" Relationship="Self.FK_KullaniciTable_Favori" FromRole="KullaniciTable" ToRole="FavoriTable" />
+          <NavigationProperty Name="IlanTable" Relationship="Self.FK_IlanTable_Kimden" FromRole="KullaniciTable" ToRole="IlanTable" />
+        </EntityType>
+        <EntityType Name="SiparisTable">
+          <Key>
+            <PropertyRef Name="SiparisId" />
+          </Key>
+          <Property Name="SiparisId" Type="Int32" Nullable="false" />
+          <Property Name="IlanId" Type="Int32" />
+          <Property Name="Adet" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="IlanTable" Relationship="Self.FK_SiparisTable_Siparis" FromRole="SiparisTable" ToRole="IlanTable" />
+        </EntityType>
+        <Association Name="FK_IlanTable_Detay">
+          <End Role="DetayTable" Type="Self.DetayTable" Multiplicity="0..1" />
+          <End Role="IlanTable" Type="Self.IlanTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DetayTable">
+              <PropertyRef Name="DetayId" />
+            </Principal>
+            <Dependent Role="IlanTable">
+              <PropertyRef Name="DetayId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FavoriTable_FavoriIlan">
+          <End Role="IlanTable" Type="Self.IlanTable" Multiplicity="0..1" />
+          <End Role="FavoriTable" Type="Self.FavoriTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IlanTable">
+              <PropertyRef Name="IlanId" />
+            </Principal>
+            <Dependent Role="FavoriTable">
+              <PropertyRef Name="IlanId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_KullaniciTable_Favori">
+          <End Role="FavoriTable" Type="Self.FavoriTable" Multiplicity="0..1" />
+          <End Role="KullaniciTable" Type="Self.KullaniciTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FavoriTable">
+              <PropertyRef Name="FavoriId" />
+            </Principal>
+            <Dependent Role="KullaniciTable">
+              <PropertyRef Name="FavoriId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IlanTable_kategori">
+          <End Role="KategoriTable" Type="Self.KategoriTable" Multiplicity="0..1" />
+          <End Role="IlanTable" Type="Self.IlanTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KategoriTable">
+              <PropertyRef Name="KategoriId" />
+            </Principal>
+            <Dependent Role="IlanTable">
+              <PropertyRef Name="KategoriId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IlanTable_Kimden">
+          <End Role="KullaniciTable" Type="Self.KullaniciTable" Multiplicity="0..1" />
+          <End Role="IlanTable" Type="Self.IlanTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KullaniciTable">
+              <PropertyRef Name="KullaniciId" />
+            </Principal>
+            <Dependent Role="IlanTable">
+              <PropertyRef Name="Kimden" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SiparisTable_Siparis">
+          <End Role="IlanTable" Type="Self.IlanTable" Multiplicity="0..1" />
+          <End Role="SiparisTable" Type="Self.SiparisTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IlanTable">
+              <PropertyRef Name="IlanId" />
+            </Principal>
+            <Dependent Role="SiparisTable">
+              <PropertyRef Name="IlanId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Database1Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="DetayTable" EntityType="Self.DetayTable" />
+          <EntitySet Name="FavoriTable" EntityType="Self.FavoriTable" />
+          <EntitySet Name="IlanTable" EntityType="Self.IlanTable" />
+          <EntitySet Name="KategoriTable" EntityType="Self.KategoriTable" />
+          <EntitySet Name="KullaniciTable" EntityType="Self.KullaniciTable" />
+          <EntitySet Name="SiparisTable" EntityType="Self.SiparisTable" />
+          <AssociationSet Name="FK_IlanTable_Detay" Association="Self.FK_IlanTable_Detay">
+            <End Role="DetayTable" EntitySet="DetayTable" />
+            <End Role="IlanTable" EntitySet="IlanTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FavoriTable_FavoriIlan" Association="Self.FK_FavoriTable_FavoriIlan">
+            <End Role="IlanTable" EntitySet="IlanTable" />
+            <End Role="FavoriTable" EntitySet="FavoriTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_KullaniciTable_Favori" Association="Self.FK_KullaniciTable_Favori">
+            <End Role="FavoriTable" EntitySet="FavoriTable" />
+            <End Role="KullaniciTable" EntitySet="KullaniciTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IlanTable_kategori" Association="Self.FK_IlanTable_kategori">
+            <End Role="KategoriTable" EntitySet="KategoriTable" />
+            <End Role="IlanTable" EntitySet="IlanTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IlanTable_Kimden" Association="Self.FK_IlanTable_Kimden">
+            <End Role="KullaniciTable" EntitySet="KullaniciTable" />
+            <End Role="IlanTable" EntitySet="IlanTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SiparisTable_Siparis" Association="Self.FK_SiparisTable_Siparis">
+            <End Role="IlanTable" EntitySet="IlanTable" />
+            <End Role="SiparisTable" EntitySet="SiparisTable" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Database1ModelStoreContainer" CdmEntityContainer="Database1Entities">
+          <EntitySetMapping Name="DetayTable">
+            <EntityTypeMapping TypeName="Database1Model.DetayTable">
+              <MappingFragment StoreEntitySet="DetayTable">
+                <ScalarProperty Name="DetayId" ColumnName="DetayId" />
+                <ScalarProperty Name="Marka" ColumnName="Marka" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="Yil" ColumnName="Yil" />
+                <ScalarProperty Name="Renk" ColumnName="Renk" />
+                <ScalarProperty Name="Plaka" ColumnName="Plaka" />
+                <ScalarProperty Name="YakitTuru" ColumnName="YakitTuru" />
+                <ScalarProperty Name="Ucret" ColumnName="Ucret" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FavoriTable">
+            <EntityTypeMapping TypeName="Database1Model.FavoriTable">
+              <MappingFragment StoreEntitySet="FavoriTable">
+                <ScalarProperty Name="FavoriId" ColumnName="FavoriId" />
+                <ScalarProperty Name="IlanId" ColumnName="IlanId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IlanTable">
+            <EntityTypeMapping TypeName="Database1Model.IlanTable">
+              <MappingFragment StoreEntitySet="IlanTable">
+                <ScalarProperty Name="IlanId" ColumnName="IlanId" />
+                <ScalarProperty Name="Baslik" ColumnName="Baslik" />
+                <ScalarProperty Name="KategoriId" ColumnName="KategoriId" />
+                <ScalarProperty Name="AlisTarihi" ColumnName="AlisTarihi" />
+                <ScalarProperty Name="TeslimTarihi" ColumnName="TeslimTarihi" />
+                <ScalarProperty Name="Kimden" ColumnName="Kimden" />
+                <ScalarProperty Name="Adres" ColumnName="Adres" />
+                <ScalarProperty Name="DetayId" ColumnName="DetayId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="KategoriTable">
+            <EntityTypeMapping TypeName="Database1Model.KategoriTable">
+              <MappingFragment StoreEntitySet="KategoriTable">
+                <ScalarProperty Name="KategoriId" ColumnName="KategoriId" />
+                <ScalarProperty Name="KategoriAdi" ColumnName="KategoriAdi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="KullaniciTable">
+            <EntityTypeMapping TypeName="Database1Model.KullaniciTable">
+              <MappingFragment StoreEntitySet="KullaniciTable">
+                <ScalarProperty Name="KullaniciId" ColumnName="KullaniciId" />
+                <ScalarProperty Name="AdSoyad" ColumnName="AdSoyad" />
+                <ScalarProperty Name="KullaniciAdi" ColumnName="KullaniciAdi" />
+                <ScalarProperty Name="Sifre" ColumnName="Sifre" />
+                <ScalarProperty Name="Adres" ColumnName="Adres" />
+                <ScalarProperty Name="TelefonNo" ColumnName="TelefonNo" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="KayitTarihi" ColumnName="KayitTarihi" />
+                <ScalarProperty Name="KullaniciYetki" ColumnName="KullaniciYetki" />
+                <ScalarProperty Name="FavoriId" ColumnName="FavoriId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SiparisTable">
+            <EntityTypeMapping TypeName="Database1Model.SiparisTable">
+              <MappingFragment StoreEntitySet="SiparisTable">
+                <ScalarProperty Name="SiparisId" ColumnName="SiparisId" />
+                <ScalarProperty Name="IlanId" ColumnName="IlanId" />
+                <ScalarProperty Name="Adet" ColumnName="Adet" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
